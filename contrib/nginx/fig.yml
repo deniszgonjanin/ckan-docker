@@ -1,0 +1,10 @@
+nginx:
+  image: nginx:1.7.6
+  hostname: nginx
+  domainname: localdomain
+  links:
+    - ckan:ckan
+  ports:
+    - "80:80"
+  volumes:
+    - ./_etc/nginx/nginx.conf:/etc/nginx/nginx.conf
