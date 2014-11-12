@@ -21,8 +21,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -qq -y install \
         python-virtualenv \
         libevent-dev \
         libpq-dev \
-        apache2 \
-        libapache2-mod-wsgi \
         postfix \
         build-essential \
         git \
@@ -50,15 +48,6 @@ ONBUILD RUN ln -s $CKAN_HOME/src/ckan/ckan/config/who.ini $CKAN_CONFIG/who.ini
 
 # Make config file
 RUN $CKAN_HOME/bin/paster make-config ckan ${CKAN_CONFIG}/${CONFIG_FILE}
-
-# Configure apache
-RUN a2dissite 000-default
-RUN echo "Listen 8080" > /etc/apache2/ports.conf
-COPY _etc/apache2/apache.wsgi $CKAN_CONFIG/apache.wsgi
-ONBUILD COPY _etc/apache2/apache.wsgi $CKAN_CONFIG/apache.wsgi
-COPY _etc/apache2/apache.conf /etc/apache2/sites-available/ckan_default.conf
-ONBUILD COPY _etc/apache2/apache.conf /etc/apache2/sites-available/ckan_default.conf
-RUN a2ensite ckan_default
 
 # Configure postfix
 COPY _etc/postfix/main.cf /etc/postfix/main.cf
