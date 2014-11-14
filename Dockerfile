@@ -26,8 +26,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -qq -y install \
         git \
         libxml2-dev \
         libxslt1-dev \
-        libgeos-c1 \
-        supervisor
+        libgeos-c1
 
 # Create directories & virtual env for CKAN
 RUN virtualenv $CKAN_HOME
@@ -48,14 +47,6 @@ ONBUILD RUN ln -s $CKAN_HOME/src/ckan/ckan/config/who.ini $CKAN_CONFIG/who.ini
 
 # Make config file
 RUN $CKAN_HOME/bin/paster make-config ckan ${CKAN_CONFIG}/${CONFIG_FILE}
-
-# Configure postfix
-COPY _etc/postfix/main.cf /etc/postfix/main.cf
-ONBUILD COPY _etc/postfix/main.cf /etc/postfix/main.cf
-
-# Configure supervisor
-COPY _etc/supervisor/conf.d/ /etc/supervisor/conf.d/
-ONBUILD COPY _etc/supervisor/conf.d/ /etc/supervisor/conf.d/
 
 # Configure cron
 COPY _etc/cron.d/ /etc/cron.d/

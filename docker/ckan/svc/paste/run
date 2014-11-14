@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu
+
+echo "Starting CKAN with Paste..."
+$CKAN_HOME/bin/paster serve ${CKAN_CONFIG}/${CONFIG_FILE}
